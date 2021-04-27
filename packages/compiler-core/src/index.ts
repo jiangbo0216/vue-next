@@ -1,6 +1,7 @@
 export { baseCompile } from './compile'
 
 // Also expose lower level APIs & types
+// [cp] 导出compiler模块
 export {
   CompilerOptions,
   ParserOptions,

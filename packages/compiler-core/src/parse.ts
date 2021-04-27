@@ -86,7 +86,9 @@ export function baseParse(
   content: string,
   options: ParserOptions = {}
 ): RootNode {
+  // [cp] parser 上下文
   const context = createParserContext(content, options)
+  // [cp] position
   const start = getCursor(context)
   return createRoot(
     parseChildren(context, TextModes.DATA, []),
