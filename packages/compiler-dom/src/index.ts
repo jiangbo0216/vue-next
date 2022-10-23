@@ -37,6 +37,7 @@ export const DOMDirectiveTransforms: Record<string, DirectiveTransform> = {
   show: transformShow
 }
 
+//= input template， options =》 codegen
 export function compile(
   template: string,
   options: CompilerOptions = {}

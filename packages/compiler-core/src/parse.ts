@@ -140,6 +140,7 @@ function createParserContext(
   }
 }
 
+//= compiler parse children
 function parseChildren(
   context: ParserContext,
   mode: TextModes,

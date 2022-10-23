@@ -13,6 +13,7 @@ if (__DEV__) {
 
 const compileCache: Record<string, RenderFunction> = Object.create(null)
 
+//= compile template
 function compileToFunction(
   template: string | HTMLElement,
   options?: CompilerOptions
@@ -27,6 +28,7 @@ function compileToFunction(
   }
 
   const key = template
+  //= compileCache
   const cached = compileCache[key]
   if (cached) {
     return cached
@@ -77,6 +79,7 @@ function compileToFunction(
   // with keys that cannot be mangled, and can be quite heavy size-wise.
   // In the global build we know `Vue` is available globally so we can avoid
   // the wildcard object.
+  //= template -> code -> render
   const render = (
     __GLOBAL__ ? new Function(code)() : new Function('Vue', code)(runtimeDom)
   ) as RenderFunction
@@ -84,9 +87,10 @@ function compileToFunction(
   // mark the function as runtime compiled
   ;(render as InternalRenderFunction)._rc = true
 
+  //= cache
   return (compileCache[key] = render)
 }
-
+//= register compile function
 registerRuntimeCompiler(compileToFunction)
 
 export { compileToFunction as compile }

@@ -39,6 +39,7 @@ let renderer: Renderer<Element | ShadowRoot> | HydrationRenderer
 
 let enabledHydration = false
 
+//= return render
 function ensureRenderer() {
   return (
     renderer ||
@@ -63,6 +64,7 @@ export const hydrate = ((...args) => {
   ensureHydrationRenderer().hydrate(...args)
 }) as RootHydrateFunction
 
+//= entry
 export const createApp = ((...args) => {
   const app = ensureRenderer().createApp(...args)
 
@@ -82,6 +84,7 @@ export const createApp = ((...args) => {
       // Reason: potential execution of JS expressions in in-DOM template.
       // The user must make sure the in-DOM template is trusted. If it's
       // rendered by the server, the template should not contain any user data.
+      //= from innerHTML to template
       component.template = container.innerHTML
       // 2.x compat check
       if (__COMPAT__ && __DEV__) {

@@ -289,6 +289,7 @@ export const queuePostRenderEffect = __FEATURE_SUSPENSE__
  * })
  * ```
  */
+//= return render, can be custom
 export function createRenderer<
   HostNode = RendererNode,
   HostElement = RendererElement
@@ -348,6 +349,7 @@ function baseCreateRenderer(
     insertStaticContent: hostInsertStaticContent
   } = options
 
+  //- why
   // Note: functions inside this closure should use `const xxx = () => {}`
   // style in order to prevent being inlined by minifiers.
   const patch: PatchFn = (
@@ -365,6 +367,7 @@ function baseCreateRenderer(
       return
     }
 
+    //= 类型不一致，直接卸载
     // patching & not same type, unmount old tree
     if (n1 && !isSameVNodeType(n1, n2)) {
       anchor = getNextHostNode(n1)
@@ -1138,6 +1141,7 @@ function baseCreateRenderer(
     }
   }
 
+  // diff component
   const processComponent = (
     n1: VNode | null,
     n2: VNode,
@@ -1160,6 +1164,7 @@ function baseCreateRenderer(
           optimized
         )
       } else {
+        //= mount component 
         mountComponent(
           n2,
           container,
@@ -1188,6 +1193,7 @@ function baseCreateRenderer(
     // mounting
     const compatMountInstance =
       __COMPAT__ && initialVNode.isCompatRoot && initialVNode.component
+    //= vue component instance
     const instance: ComponentInternalInstance =
       compatMountInstance ||
       (initialVNode.component = createComponentInstance(
@@ -1235,6 +1241,7 @@ function baseCreateRenderer(
       return
     }
 
+    //= setupRenderEffect
     setupRenderEffect(
       instance,
       initialVNode,
@@ -1285,6 +1292,7 @@ function baseCreateRenderer(
     }
   }
 
+  //= 执行 render
   const setupRenderEffect: SetupRenderEffectFn = (
     instance,
     initialVNode,
@@ -1294,6 +1302,7 @@ function baseCreateRenderer(
     isSVG,
     optimized
   ) => {
+    //= do component update, 
     const componentUpdateFn = () => {
       if (!instance.isMounted) {
         let vnodeHook: VNodeHook | null | undefined
@@ -1361,6 +1370,7 @@ function baseCreateRenderer(
           if (__DEV__) {
             startMeasure(instance, `render`)
           }
+          //= renderComponentRoot
           const subTree = (instance.subTree = renderComponentRoot(instance))
           if (__DEV__) {
             endMeasure(instance, `render`)
@@ -1538,6 +1548,7 @@ function baseCreateRenderer(
     }
 
     // create reactive effect for rendering
+    //= init ReactiveEffect, do in componentUpdateFn, schedule in () => queueJob(update) 
     const effect = (instance.effect = new ReactiveEffect(
       componentUpdateFn,
       () => queueJob(update),
@@ -2311,12 +2322,14 @@ function baseCreateRenderer(
     return hostNextSibling((vnode.anchor || vnode.el)!)
   }
 
+  //= export from baseCreateRenderer, render in mount
   const render: RootRenderFunction = (vnode, container, isSVG) => {
     if (vnode == null) {
       if (container._vnode) {
         unmount(container._vnode, null, null, true)
       }
     } else {
+      //= core method in render, main diff arg_1 with arg_2
       patch(container._vnode || null, vnode, container, null, null, null, isSVG)
     }
     flushPreFlushCbs()
@@ -2337,6 +2350,7 @@ function baseCreateRenderer(
     o: options
   }
 
+  //= export from baseCreateRenderer, hydrate in mount
   let hydrate: ReturnType<typeof createHydrationFunctions>[0] | undefined
   let hydrateNode: ReturnType<typeof createHydrationFunctions>[1] | undefined
   if (createHydrationFns) {

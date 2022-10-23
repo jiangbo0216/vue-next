@@ -593,6 +593,7 @@ export function isStatefulComponent(instance: ComponentInternalInstance) {
 
 export let isInSSRComponentSetup = false
 
+//= patch -> processComponent -> mountComponent -> setupComponent, setup component, props & lifecycle
 export function setupComponent(
   instance: ComponentInternalInstance,
   isSSR = false
@@ -601,16 +602,19 @@ export function setupComponent(
 
   const { props, children } = instance.vnode
   const isStateful = isStatefulComponent(instance)
+  //= init props
   initProps(instance, props, isStateful, isSSR)
   initSlots(instance, children)
 
   const setupResult = isStateful
+    //= to begine compile
     ? setupStatefulComponent(instance, isSSR)
     : undefined
   isInSSRComponentSetup = false
   return setupResult
 }
 
+//= setup 生命周期 call
 function setupStatefulComponent(
   instance: ComponentInternalInstance,
   isSSR: boolean
@@ -700,6 +704,7 @@ function setupStatefulComponent(
       handleSetupResult(instance, setupResult, isSSR)
     }
   } else {
+    //= begin compile, finishComponentSetup -> finishComponentSetup
     finishComponentSetup(instance, isSSR)
   }
 }
@@ -756,6 +761,7 @@ let installWithProxy: (i: ComponentInternalInstance) => void
  * For runtime-dom to register the compiler.
  * Note the exported method uses any to avoid d.ts relying on the compiler types.
  */
+//= runtime compile template
 export function registerRuntimeCompiler(_compile: any) {
   compile = _compile
   installWithProxy = i => {
@@ -768,6 +774,7 @@ export function registerRuntimeCompiler(_compile: any) {
 // dev only
 export const isRuntimeOnly = () => !compile
 
+//= compile template
 export function finishComponentSetup(
   instance: ComponentInternalInstance,
   isSSR: boolean,

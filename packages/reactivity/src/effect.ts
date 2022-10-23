@@ -83,6 +83,7 @@ export class ReactiveEffect<T = any> {
     recordEffectScope(this, scope)
   }
 
+  //= effect is property in vue instance, run do instance dom work
   run() {
     if (!this.active) {
       return this.fn()

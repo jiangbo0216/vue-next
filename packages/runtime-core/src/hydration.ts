@@ -73,6 +73,7 @@ export function createHydrationFunctions(
           `Attempting to hydrate existing markup but container is empty. ` +
             `Performing full mount instead.`
         )
+      //= patch core method
       patch(null, vnode, container)
       flushPostFlushCbs()
       container._vnode = vnode

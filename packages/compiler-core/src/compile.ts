@@ -24,6 +24,7 @@ export type TransformPreset = [
   Record<string, DirectiveTransform>
 ]
 
+//= vue ast transform
 export function getBaseTransformPreset(
   prefixIdentifiers?: boolean
 ): TransformPreset {
@@ -58,6 +59,7 @@ export function getBaseTransformPreset(
 
 // we name it `baseCompile` so that higher order compilers like
 // @vue/compiler-dom can export `compile` while re-exporting everything else.
+//= base compile
 export function baseCompile(
   template: string | RootNode,
   options: CompilerOptions = {}

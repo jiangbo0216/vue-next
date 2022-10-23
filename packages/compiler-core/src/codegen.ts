@@ -303,6 +303,7 @@ export function generate(
   deindent()
   push(`}`)
 
+  //= get code
   return {
     ast,
     code: context.code,

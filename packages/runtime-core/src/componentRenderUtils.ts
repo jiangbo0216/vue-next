@@ -40,6 +40,7 @@ export function markAttrsAccessed() {
 
 type SetRootFn = ((root: VNode) => void) | undefined
 
+//= setupRenderEffect -> .run -> componentUpdateFn -> renderComponentRoot
 export function renderComponentRoot(
   instance: ComponentInternalInstance
 ): VNode {

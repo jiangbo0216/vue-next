@@ -174,6 +174,7 @@ export type CreateAppFunction<HostElement> = (
 
 let uid = 0
 
+//= render & hydrate for mount function
 export function createAppAPI<HostElement>(
   render: RootRenderFunction<HostElement>,
   hydrate?: RootHydrateFunction
@@ -193,6 +194,7 @@ export function createAppAPI<HostElement>(
 
     let isMounted = false
 
+    //= app
     const app: App = (context.app = {
       _uid: uid++,
       _component: rootComponent as ConcreteComponent,
@@ -278,6 +280,7 @@ export function createAppAPI<HostElement>(
         return app
       },
 
+      //= real mount
       mount(
         rootContainer: HostElement,
         isHydrate?: boolean,
@@ -292,6 +295,7 @@ export function createAppAPI<HostElement>(
                 ` you need to unmount the previous app by calling \`app.unmount()\` first.`
             )
           }
+          //= create vnode
           const vnode = createVNode(
             rootComponent as ConcreteComponent,
             rootProps
